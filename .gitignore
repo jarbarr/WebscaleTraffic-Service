@@ -7,3 +7,5 @@ node_modules/
 # Compiled Dirs (http://nodejs.org/api/addons.html)
 public/bundle.js
 
+# mysql config
+config.js
