@@ -4,9 +4,10 @@
   "description": "A clone of the Airbnb calendar component",
   "main": "index.js",
   "scripts": {
-    "react-dev": "webpack -d --watch",
     "test": "jest",
-    "db:setup": "node database/seed.js"
+    "client": "webpack -d --watch",
+    "server": "nodemon server/index.js",
+    "seed": "node database/seed.js"
   },
   "repository": {
     "type": "git",
