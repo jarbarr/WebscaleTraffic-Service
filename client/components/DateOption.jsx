@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import CalendarBox from './CalendarBox.jsx';
+import moment from 'moment';
 
 const Container = styled.div`
   display: flex;
@@ -41,7 +42,7 @@ class DateOption extends React.Component {
 
     this.state = {
       clicked: false
-    };
+    }
   }
 
   handleClick() {
@@ -58,7 +59,7 @@ class DateOption extends React.Component {
 
   checkClickStatus() {
     if (this.state.clicked) {
-      return <CalendarBox minimum_stay={this.props.minimum_stay} booked_date={this.props.booked_date} close={this.close.bind(this)} getCheckInDate={this.props.getCheckInDate} getCheckOutDate={this.props.getCheckOutDate}/>;
+      return <CalendarBox minimum_stay={this.props.minimum_stay} booked_date={this.props.booked_date} close={this.close.bind(this)} getCheckInDate={this.props.getCheckInDate} getCheckOutDate={this.props.getCheckOutDate} checkInDateMomentObj={this.props.checkInDateMomentObj} checkOutDateMomentObj={this.props.checkOutDateMomentObj} clearDate={this.props.clearDate}/>;
     } else {
       return null;
     }
@@ -70,11 +71,11 @@ class DateOption extends React.Component {
         <Container onClick={this.handleClick.bind(this)}>
           <CheckIn>
             <CheckTitle>CHECK-IN</CheckTitle>
-            <AddDate>Add date</AddDate>
+            <AddDate>{this.props.checkInDateMomentObj ? this.props.checkInDateMomentObj.format('L') : 'Add date'}</AddDate>
           </CheckIn>
           <CheckOut>
             <CheckTitle>CHECKOUT</CheckTitle>
-            <AddDate>Add date</AddDate>
+            <AddDate>{this.props.checkOutDateMomentObj ? this.props.checkOutDateMomentObj.format('L') : 'Add date'}</AddDate>
           </CheckOut>
         </Container>
         {this.checkClickStatus()}

@@ -112,18 +112,17 @@ class CalendarBox extends React.Component {
           <TopRight>
             <CheckIn>
               <CheckTitle>CHECK-IN</CheckTitle>
-              <AddDate>Add date</AddDate>
+              <AddDate>{this.props.checkInDateMomentObj ? this.props.checkInDateMomentObj.format('L') : 'Add date'}</AddDate>
             </CheckIn>
             <CheckOut>
               <CheckTitle>CHECKOUT</CheckTitle>
-              <AddDate>Add date</AddDate>
+              <AddDate>{this.props.checkOutDateMomentObj ? this.props.checkOutDateMomentObj.format('L') : 'Add date'}</AddDate>
             </CheckOut>
           </TopRight>
         </Top>
         <Bottom>
-          <Calendar minimum_stay={this.props.minimum_stay} booked_date={this.props.booked_date} getCheckInDate={this.props.getCheckInDate} getCheckOutDate={this.props.getCheckOutDate} close={this.props.close}/>
+          <Calendar minimum_stay={this.props.minimum_stay} booked_date={this.props.booked_date} getCheckInDate={this.props.getCheckInDate} getCheckOutDate={this.props.getCheckOutDate} close={this.props.close} close={this.props.close} clearDate={this.props.clearDate}/>
         </Bottom>
-        <button onClick={this.props.close}>Close</button>
       </Container>
     );
   }

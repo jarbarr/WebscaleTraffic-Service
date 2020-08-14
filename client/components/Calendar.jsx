@@ -170,6 +170,15 @@ class Calendar extends React.Component {
     });
   }
 
+  clear() {
+    this.setState({
+      checkInDateSelected: false,
+      checkInDateMomentObj: null,
+      checkOutDateMomentObj: null,
+      closestBookedDateAfterCheckInDate: null
+    });
+  }
+
   render() {
     // get the moment object of current month
     let currentMonthMomentObj = this.state.currentMomentObj;
@@ -221,6 +230,8 @@ class Calendar extends React.Component {
             </tbody>
           </table>
         </span>
+        <button onClick={() => {this.props.clearDate(); this.clear();}}>Clear dates</button>
+        <button onClick={this.props.close}>Close</button>
       </div>
     );
   }

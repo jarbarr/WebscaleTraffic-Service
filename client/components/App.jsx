@@ -45,6 +45,7 @@ class App extends React.Component {
     }
     this.getCheckInDate = this.getCheckInDate.bind(this);
     this.getCheckOutDate = this.getCheckOutDate.bind(this);
+    this.clearDate = this.clearDate.bind(this);
   }
 
   // get all the informations and reservations of a specify room with the input room id
@@ -69,16 +70,23 @@ class App extends React.Component {
   }
 
   getCheckInDate(dateMomentObj) {
-    console.log("In", dateMomentObj);
+    console.log("check in: ", dateMomentObj);
     this.setState({
       checkInDateMomentObj: dateMomentObj
     });
   }
 
   getCheckOutDate(dateMomentObj) {
-    console.log("Out", dateMomentObj);
+    console.log("check out: ", dateMomentObj);
     this.setState({
       checkOutDateMomentObj: dateMomentObj
+    });
+  }
+
+  clearDate() {
+    this.setState({
+      checkInDateMomentObj: null,
+      checkOutDateMomentObj: null
     });
   }
 
@@ -87,7 +95,7 @@ class App extends React.Component {
       <Container>
         <Menu>
           <RoomBasicData nightly_fee={this.state.nightly_fee} rating={this.state.rating} reviews={this.state.reviews}/>
-          <Options minimum_stay={this.state.minimum_stay} maximum_guest={this.state.maximum_guest} booked_date={this.state.booked_date} getCheckInDate={this.getCheckInDate} getCheckOutDate={this.getCheckOutDate}/>
+          <Options minimum_stay={this.state.minimum_stay} maximum_guest={this.state.maximum_guest} booked_date={this.state.booked_date} getCheckInDate={this.getCheckInDate} getCheckOutDate={this.getCheckOutDate} checkInDateMomentObj={this.state.checkInDateMomentObj} checkOutDateMomentObj={this.state.checkOutDateMomentObj} clearDate={this.clearDate}/>
           {/* <Button>Check availability</Button> */}
         </Menu>
       </Container>
