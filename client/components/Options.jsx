@@ -12,7 +12,7 @@ const Container = styled.div`
 
 const Options = (props) => (
   <Container>
-    <DateOption minimum_stay={props.minimum_stay} booked_date={props.booked_date}/>
+    <DateOption minimum_stay={props.minimum_stay} booked_date={props.booked_date} getCheckInDate={props.getCheckInDate} getCheckOutDate={props.getCheckOutDate}/>
     <GuestOption maximum_guest={props.maximum_guest}/>
   </Container>
 );

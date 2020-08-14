@@ -39,8 +39,12 @@ class App extends React.Component {
       reviews : 0,
       minimum_stay : 0,
       maximum_guest : 0,
-      booked_date : []
+      booked_date : [],
+      checkInDateMomentObj: null,
+      checkOutDateMomentObj: null
     }
+    this.getCheckInDate = this.getCheckInDate.bind(this);
+    this.getCheckOutDate = this.getCheckOutDate.bind(this);
   }
 
   // get all the informations and reservations of a specify room with the input room id
@@ -64,12 +68,26 @@ class App extends React.Component {
     this.getRoomData(roomID);
   }
 
+  getCheckInDate(dateMomentObj) {
+    console.log("In", dateMomentObj);
+    this.setState({
+      checkInDateMomentObj: dateMomentObj
+    });
+  }
+
+  getCheckOutDate(dateMomentObj) {
+    console.log("Out", dateMomentObj);
+    this.setState({
+      checkOutDateMomentObj: dateMomentObj
+    });
+  }
+
   render() {
     return(
       <Container>
         <Menu>
           <RoomBasicData nightly_fee={this.state.nightly_fee} rating={this.state.rating} reviews={this.state.reviews}/>
-          <Options minimum_stay={this.state.minimum_stay} maximum_guest={this.state.maximum_guest} booked_date={this.state.booked_date}/>
+          <Options minimum_stay={this.state.minimum_stay} maximum_guest={this.state.maximum_guest} booked_date={this.state.booked_date} getCheckInDate={this.getCheckInDate} getCheckOutDate={this.getCheckOutDate}/>
           {/* <Button>Check availability</Button> */}
         </Menu>
       </Container>

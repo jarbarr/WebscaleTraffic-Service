@@ -121,7 +121,7 @@ class CalendarBox extends React.Component {
           </TopRight>
         </Top>
         <Bottom>
-          <Calendar minimum_stay={this.props.minimum_stay} booked_date={this.props.booked_date}/>
+          <Calendar minimum_stay={this.props.minimum_stay} booked_date={this.props.booked_date} getCheckInDate={this.props.getCheckInDate} getCheckOutDate={this.props.getCheckOutDate} close={this.props.close}/>
         </Bottom>
         <button onClick={this.props.close}>Close</button>
       </Container>

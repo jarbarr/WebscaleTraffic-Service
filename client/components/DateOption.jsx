@@ -58,7 +58,7 @@ class DateOption extends React.Component {
 
   checkClickStatus() {
     if (this.state.clicked) {
-      return <CalendarBox minimum_stay={this.props.minimum_stay} booked_date={this.props.booked_date} close={this.close.bind(this)}/>;
+      return <CalendarBox minimum_stay={this.props.minimum_stay} booked_date={this.props.booked_date} close={this.close.bind(this)} getCheckInDate={this.props.getCheckInDate} getCheckOutDate={this.props.getCheckOutDate}/>;
     } else {
       return null;
     }
