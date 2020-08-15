@@ -59,7 +59,7 @@ class GuestBox extends React.Component {
     return (
       <Container>
         {this.state.guestList.map((guest, i) =>
-          <Guest key={i} guest={guest} maximum_guest={this.props.maximum_guest} adults={this.props.adults} children={this.props.children} infants={this.props.infants} add={this.props.add} subtract={this.props.subtract}/>
+          <Guest key={i} guest={guest} maximum_guest={this.props.maximum_guest} adults={this.props.adults} children={this.props.children} infants={this.props.infants} add={this.props.add} subtract={this.props.subtract} totalGuest={this.props.totalGuest}/>
         )}
         <Sentence>{this.props.maximum_guest} guests maximum. Infants don’t count toward the number of guests.</Sentence>
         <Last>

@@ -51,26 +51,51 @@ const GuestNum = styled.div`
 const GuestButton = styled.button`
   width: 32px;
   height: 32px;
-  flex-grow: 0;
-  flex-shrink: 0;
-  cursor: pointer;
   display: inline-flex;
-  text-align: center;
   color: rgb(113, 113, 113);
   font-family: inherit;
-  touch-action: manipulation;
-  align-items: center;
   justify-content: center;
-  margin: 0px;
   padding-bottom: 4px;
-  text-decoration: none;
   border-width: 1px;
   border-style: solid;
   border-color: rgb(176, 176, 176);
-  outline: none;
   background: rgb(255, 255, 255);
   border-radius: 50%;
   font-size: 22px;
+  cursor: pointer;
+  text-align: center;
+  touch-action: manipulation;
+  align-items: center;
+  margin: 0px;
+  text-decoration: none;
+  outline: none;
+  :hover {
+    color: rgb(34, 34, 34);
+    border-color: rgb(34, 34, 34);
+  }
+`;
+
+const DisableGuestButton = styled.button`
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  font-family: inherit;
+  justify-content: center;
+  padding-bottom: 4px;
+  border-width: 1px;
+  border-style: solid;
+  background: rgb(255, 255, 255);
+  border-radius: 50%;
+  font-size: 22px;
+  text-align: center;
+  touch-action: manipulation;
+  align-items: center;
+  margin: 0px;
+  text-decoration: none;
+  outline: none;
+  cursor: not-allowed;
+  color: rgb(235, 235, 235);
+  border-color: rgb(235, 235, 235);
 `;
 
 class Guest extends React.Component {
@@ -85,17 +110,46 @@ class Guest extends React.Component {
     let containerStyle = {};
     let information = '';
     let number;
+    let subtractButton = <GuestButton onClick={() => this.props.subtract(this.props.guest)}>-</GuestButton>;
+    let addButton = <GuestButton onClick={() => this.props.add(this.props.guest)}>+</GuestButton>;
+    // if current guest type is Adult
     if (this.props.guest === 'Adults') {
       containerStyle = {'marginTop': '8px'};
       number = this.props.adults;
+      // if the number of adult is 1
+      if (number === 1) {
+        subtractButton = <DisableGuestButton onClick={() => this.props.subtract(this.props.guest)}>-</DisableGuestButton>;
+      }
+      // if the number of total guest (adult + children) is larger than the number of maximum guest
+      if (this.props.totalGuest >= this.props.maximum_guest) {
+        addButton = <DisableGuestButton onClick={() => this.props.add(this.props.guest)}>+</DisableGuestButton>;
+      }
+    // if current guest type is Children
     } else if (this.props.guest === 'Children') {
       containerStyle = {'marginTop': '24px'};
       information = 'Ages 2-12';
       number = this.props.children;
+      // if the number of children is 0
+      if (number === 0) {
+        subtractButton = <DisableGuestButton onClick={() => this.props.subtract(this.props.guest)}>-</DisableGuestButton>;
+      }
+      // if the number of total guest (adult + children) is larger than the number of maximum guest
+      if (this.props.totalGuest >= this.props.maximum_guest) {
+        addButton = <DisableGuestButton onClick={() => this.props.add(this.props.guest)}>+</DisableGuestButton>;;
+      }
+    // if current guest type is Infants
     } else if (this.props.guest === 'Infants') {
       containerStyle = {'marginTop': '24px'};
       information = 'Under 2';
       number = this.props.infants;
+      // if the number of infants is 0
+      if (number === 0) {
+        subtractButton = <DisableGuestButton onClick={() => this.props.subtract(this.props.guest)}>-</DisableGuestButton>;
+      }
+      // if the number of infants is 5
+      if (number === 5) {
+        addButton = <DisableGuestButton onClick={() => this.props.add(this.props.guest)}>+</DisableGuestButton>;;
+      }
     }
 
     return (
@@ -105,9 +159,9 @@ class Guest extends React.Component {
           <GuestTypeInf>{information}</GuestTypeInf>
         </Left>
         <Right>
-          <GuestButton onClick={() => this.props.subtract(this.props.guest)}>-</GuestButton>
+          {subtractButton}
           {number}
-          <GuestButton onClick={() => this.props.add(this.props.guest)}>+</GuestButton>
+          {addButton}
         </Right>
       </Container>
     );
@@ -115,3 +169,4 @@ class Guest extends React.Component {
 }
 
 export default Guest;
+

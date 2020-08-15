@@ -69,14 +69,6 @@ class GuestOption extends React.Component {
     });
   }
 
-  checkClickStatus() {
-    if (this.state.clicked) {
-      return <GuestBox maximum_guest={this.props.maximum_guest} close={this.close} adults={this.state.adults} children={this.state.children} infants={this.state.infants} add={this.add} subtract={this.subtract}/>;
-    } else {
-      return null;
-    }
-  }
-
   subtract(guestType) {
     if (guestType === 'Adults') {
       if (this.state.adults > 1) {
@@ -144,14 +136,14 @@ class GuestOption extends React.Component {
 
     return (
       <Container>
-          <Guest onClick={this.handleClick}>
-            <GuestTitle>GUESTS</GuestTitle>
-            <GuestNum>{totalGuest} {guest}{infants}</GuestNum>
-          </Guest>
-          <Arrow onClick={this.handleClick}>
-            {arrow}
-          </Arrow>
-        {this.checkClickStatus()}
+        <Guest onClick={this.handleClick}>
+          <GuestTitle>GUESTS</GuestTitle>
+          <GuestNum>{totalGuest} {guest}{infants}</GuestNum>
+        </Guest>
+        <Arrow onClick={this.handleClick}>
+          {arrow}
+        </Arrow>
+        {this.state.clicked ? <GuestBox maximum_guest={this.props.maximum_guest} close={this.close} adults={this.state.adults} children={this.state.children} totalGuest={totalGuest} infants={this.state.infants} add={this.add} subtract={this.subtract}/> : null}
       </Container>
     );
   }
