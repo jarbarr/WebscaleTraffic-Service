@@ -33,7 +33,7 @@ const Right = styled.div`
 
 const Star = styled.span`
   font-family: Airmoji_Standalone;
-  color: #92174D;
+  color: #FF385C;
 `;
 
 const Rating = styled.span`
