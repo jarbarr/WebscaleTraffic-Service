@@ -6,7 +6,7 @@ const Container = styled.div`
   box-shadow: rgba(0, 0, 0, 0.2) 0px 6px 20px;
   display: inline-block;
   padding-top: 24px;
-  padding-bottom: 16px;
+  padding-bottom: 10px;
   padding-left: 32px;
   padding-right: 32px;
   position: absolute;
@@ -24,11 +24,25 @@ const Top = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding-bottom: 16px;
+`;
+
+const Bottom = styled.div`
+  display: flex;
+  height: 100%;
 `;
 
 const TopLeft = styled.div`
   order: 1;
+`;
+
+const TopRight = styled.div`
+  flex-basis: 315px;
+  order: 2;
+  margin-left: 24px;
+  min-width: 270px;
+  display: flex;
+  box-shadow: rgb(176, 176, 176) 0px 0px 0px 1px inset;
+  border-radius: 8px;
 `;
 
 const SelectDate = styled.h2`
@@ -46,16 +60,6 @@ const MinimumStay = styled.div`
   padding-top: 8px;
   max-height: 36px;
   height: 36px;
-`;
-
-const TopRight = styled.div`
-  flex-basis: 315px;
-  order: 2;
-  margin-left: 24px;
-  min-width: 270px;
-  display: flex;
-  box-shadow: rgb(176, 176, 176) 0px 0px 0px 1px inset;
-  border-radius: 8px;
 `;
 
 const CheckIn = styled.div`
@@ -87,11 +91,6 @@ const AddDate = styled.div`
   color: rgb(113, 113, 113);
 `;
 
-const Bottom = styled.div`
-  display: flex;
-  height: 100%;
-`;
-
 class CalendarBox extends React.Component {
   constructor(props) {
     super(props);
@@ -102,21 +101,26 @@ class CalendarBox extends React.Component {
   }
 
   render() {
+    let checkInDateMomentObj = this.props.checkInDateMomentObj;
+    let checkOutDateMomentObj = this.props.checkOutDateMomentObj;
+
     return (
       <Container>
         <Top>
           <TopLeft>
             <SelectDate>Select dates</SelectDate>
-            <MinimumStay>Minimum stay: {this.props.minimum_stay} nights</MinimumStay>
+            <MinimumStay>
+              {checkInDateMomentObj && checkOutDateMomentObj ? `${checkInDateMomentObj.format('ll')} - ${checkOutDateMomentObj.format('ll')}` : `Minimum stay: ${this.props.minimum_stay} nights`}
+            </MinimumStay>
           </TopLeft>
           <TopRight>
             <CheckIn>
               <CheckTitle>CHECK-IN</CheckTitle>
-              <AddDate>{this.props.checkInDateMomentObj ? this.props.checkInDateMomentObj.format('L') : 'Add date'}</AddDate>
+              <AddDate>{checkInDateMomentObj ? checkInDateMomentObj.format('L') : 'Add date'}</AddDate>
             </CheckIn>
             <CheckOut>
               <CheckTitle>CHECKOUT</CheckTitle>
-              <AddDate>{this.props.checkOutDateMomentObj ? this.props.checkOutDateMomentObj.format('L') : 'Add date'}</AddDate>
+              <AddDate>{checkOutDateMomentObj ? checkOutDateMomentObj.format('L') : 'Add date'}</AddDate>
             </CheckOut>
           </TopRight>
         </Top>
