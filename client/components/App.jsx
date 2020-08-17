@@ -172,8 +172,8 @@ class App extends React.Component {
       totalNight = this.getTotalNight(this.state.checkInDateMomentObj, this.state.checkOutDateMomentObj);
       // use the total nights times the nightly fee to find the total nightly fee
       totalNightlyFee = totalNight * this.state.nightly_fee;
-      // use the nightly fee to find the cleaning fee (between 45% and 85% (exclusive) of nightly fee)
-      cleaningFee = Number((this.state.nightly_fee * (Math.random() * (0.85 - 0.45) + 0.45)).toFixed(0));
+      // use the nightly fee to find the cleaning fee (around 65% of nightly fee)
+      cleaningFee = Number((this.state.nightly_fee * 0.65).toFixed(0));
       // use the total nightly fee and the cleaning fee to find the service fee ((Total nightly fee + cleaning fee) * 0.142)
       serviceFee = Number(((totalNightlyFee + cleaningFee) * 0.142).toFixed(0));
       // get the total fee

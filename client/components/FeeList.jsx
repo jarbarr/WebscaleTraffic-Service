@@ -12,7 +12,7 @@ const Message = styled.div`
   flex-direction: column;
   list-style-type: none;
   text-align: center;
-  margin: 8px 0px 0px;
+  margin: 16px 0px 0px;
   padding: 0px;
 `;
 
@@ -25,30 +25,30 @@ const Fees = styled.div`
   line-height: 20px;
 `;
 
-const ListContainer = styled.ul`
+const List = styled.ul`
   list-style-type: none;
   margin: 0px;
   padding: 0px;
 `;
 
-const ListEntryContainer = styled.li`
+const ListEntry = styled.li`
   padding-bottom: 12px;
   display: flex;
 `;
 
-const ListEntryContainerLeft = styled.span`
+const ListEntryLeft = styled.span`
   flex-shrink: 1;
   flex-grow: 1;
   white-space: normal;
   text-decoration: underline;
 `;
 
-const ListEntryContainerRight = styled.span`
+const ListEntryRight = styled.span`
   padding-left: 16px;
   white-space: nowrap;
 `;
 
-const TotalContainer = styled.ul`
+const Total = styled.ul`
   list-style-type: none;
   border-top: 1px solid rgb(221, 221, 221);
   margin: 16px 0px 0px;
@@ -56,14 +56,14 @@ const TotalContainer = styled.ul`
   display: flex;
 `;
 
-const TotalContainerLeft = styled.span`
+const TotalLeft = styled.span`
   flex-shrink: 1;
   flex-grow: 1;
   white-space: normal;
   font-weight: 800;
 `;
 
-const TotalContainerRight = styled.span`
+const TotalRight = styled.span`
   padding-left: 16px;
   white-space: nowrap;
   font-weight: 800;
@@ -81,36 +81,36 @@ const FeeList = (props) => {
     <div>
       <Message>You won't be charged yet</Message>
       <Fees>
-        <ListContainer>
-          <ListEntryContainer>
-            <ListEntryContainerLeft>
+        <List>
+          <ListEntry>
+            <ListEntryLeft>
               ${props.nightly_fee} x {props.totalNight} nights:
-            </ListEntryContainerLeft>
-            <ListEntryContainerRight>
+            </ListEntryLeft>
+            <ListEntryRight>
               ${props.totalNightlyFee}
-            </ListEntryContainerRight>
-          </ListEntryContainer>
-          <ListEntryContainer>
-            <ListEntryContainerLeft>
+            </ListEntryRight>
+          </ListEntry>
+          <ListEntry>
+            <ListEntryLeft>
               Cleaning fee:
-            </ListEntryContainerLeft>
-            <ListEntryContainerRight>
+            </ListEntryLeft>
+            <ListEntryRight>
               ${props.cleaningFee}
-            </ListEntryContainerRight>
-          </ListEntryContainer>
-          <ListEntryContainer style={lastEntry}>
-            <ListEntryContainerLeft>
+            </ListEntryRight>
+          </ListEntry>
+          <ListEntry style={lastEntry}>
+            <ListEntryLeft>
               Service fee:
-            </ListEntryContainerLeft>
-            <ListEntryContainerRight>
+            </ListEntryLeft>
+            <ListEntryRight>
               ${props.serviceFee}
-            </ListEntryContainerRight>
-          </ListEntryContainer>
-        </ListContainer>
-        <TotalContainer>
-          <TotalContainerLeft>Total:</TotalContainerLeft>
-          <TotalContainerRight>${props.totalFee}</TotalContainerRight>
-        </TotalContainer>
+            </ListEntryRight>
+          </ListEntry>
+        </List>
+        <Total>
+          <TotalLeft>Total:</TotalLeft>
+          <TotalRight>${props.totalFee}</TotalRight>
+        </Total>
       </Fees>
     </div>
   );
