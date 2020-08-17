@@ -13,7 +13,7 @@ const Container = styled.div`
   top: 50px;
   right: -10px;
   width: 661px;
-  z-index: 1;
+  z-index: 3;
   min-height: 460px;
   background: rgb(255, 255, 255);
   border-radius: 16px;

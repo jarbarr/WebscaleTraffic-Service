@@ -53,9 +53,9 @@ const Button = styled.button`
 `;
 
 const ButtonWord = styled.span`
-  display: block !important;
-  position: relative !important;
-  pointer-events: none !important;
+  display: block;
+  position: relative;
+  pointer-events: none;
 `;
 
 class App extends React.Component {
@@ -156,7 +156,16 @@ class App extends React.Component {
     let serviceFee = null;
     let totalFee = null;
     let feeList = null;
+    let buttonStyle = {};
+
+    if (this.state.hover) {
+      buttonStyle = {
+        'background': `radial-gradient(circle at ${this.state.mouseX}% ${this.state.mouseY}%, #FF385C 0%, #E61E4D 27.5%, #E31C5F 40%, #D70466 57.5%, #BD1E59 75%, #BD1E59 100%)`,
+      };
+    }
+
     let submitButton = <Button style={buttonStyle} onMouseEnter={this.toggleHover.bind(this)} onMouseLeave={this.toggleHover.bind(this)} onMouseMove={this.handleMouseMove.bind(this)}><ButtonWord>Check availability</ButtonWord></Button>;
+
     // if check in date and check out date is already selected
     if (this.state.checkInDateMomentObj && this.state.checkOutDateMomentObj) {
       // use the check in date and check out date to find the total nights
@@ -173,13 +182,6 @@ class App extends React.Component {
       feeList = <FeeList nightly_fee={this.state.nightly_fee} totalNight={totalNight} totalNightlyFee={totalNightlyFee} cleaningFee={cleaningFee} serviceFee={serviceFee} totalFee={totalFee}/>
       // update submit button
       submitButton = <Button style={buttonStyle} onMouseEnter={this.toggleHover.bind(this)} onMouseLeave={this.toggleHover.bind(this)} onMouseMove={this.handleMouseMove.bind(this)}><ButtonWord>Reserve</ButtonWord></Button>;
-    }
-
-    let buttonStyle = {};
-    if (this.state.hover) {
-      buttonStyle = {
-        'background': `radial-gradient(circle at ${this.state.mouseX}% ${this.state.mouseY}%, #FF385C 0%, #E61E4D 27.5%, #E31C5F 40%, #D70466 57.5%, #BD1E59 75%, #BD1E59 100%)`,
-      };
     }
 
     return(
