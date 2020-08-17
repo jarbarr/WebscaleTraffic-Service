@@ -207,11 +207,9 @@ const KeyboardButton = styled.button`
 
 const ClearButton = styled.button`
   cursor: pointer;
-  display: inline-block;
   position: relative;
   text-align: center;
   width: auto;
-  touch-action: manipulation;
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
   font-size: 14px;
   line-height: 18px;
@@ -224,22 +222,20 @@ const ClearButton = styled.button`
   margin: 0px -8px;
   border-radius: 8px;
   outline: none;
-  transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
-  border-width: initial;
   border-style: none;
-  border-color: initial;
-  border-image: initial;
   background: transparent;
   text-decoration: underline;
+  :hover {
+    color: rgb(0, 0, 0);
+    background: rgb(247, 247, 247);
+  }
 `;
 
 const CloseButton = styled.button`
   cursor: pointer;
-  display: inline-block;
   position: relative;
   text-align: center;
   width: auto;
-  touch-action: manipulation;
   font-family: Circular, -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
   font-size: 14px;
   line-height: 18px;
@@ -249,16 +245,13 @@ const CloseButton = styled.button`
   padding-left: 16px;
   padding-right: 16px;
   color: rgb(255, 255, 255);
-  margin: 0px;
-  text-decoration: none;
   border-radius: 8px;
   outline: none;
-  transition: box-shadow 0.2s ease 0s, -ms-transform 0.1s ease 0s, -webkit-transform 0.1s ease 0s, transform 0.1s ease 0s;
-  border-width: initial;
   border-style: none;
-  border-color: initial;
-  border-image: initial;
   background: rgb(34, 34, 34);
+  :hover {
+    background: rgb(0,0,0);
+  }
 `;
 
 class Calendar extends React.Component {
