@@ -63,13 +63,14 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      allData : [],
-      nightly_fee : 0,
-      rating : 0,
-      reviews : 0,
-      minimum_stay : 0,
-      maximum_guest : 0,
-      booked_date : [],
+      roomId: null,
+      allData: [],
+      nightly_fee: 0,
+      rating: 0,
+      reviews: 0,
+      minimum_stay: 0,
+      maximum_guest: 0,
+      booked_date: [],
       checkInDateMomentObj: null,
       checkOutDateMomentObj: null,
       mouseX: 0,
@@ -79,12 +80,17 @@ class App extends React.Component {
     this.getCheckInDate = this.getCheckInDate.bind(this);
     this.getCheckOutDate = this.getCheckOutDate.bind(this);
     this.clearDate = this.clearDate.bind(this);
+    this.postReservationData = this.postReservationData.bind(this);
+    this.toggleHover = this.toggleHover.bind(this);
+    this.handleMouseMove = this.handleMouseMove.bind(this);
   }
 
   // get all the informations and reservations of a specify room with the input room id
   getRoomData(roomID) {
     $.get(`/rooms/${roomID}/reservation`, (data) => {
+      console.log("GET request succeed");
       this.setState({
+        roomId: roomID,
         allData : data,
         nightly_fee : data[0].nightly_fee,
         rating : data[0].rating,
@@ -96,9 +102,25 @@ class App extends React.Component {
     });
   }
 
+  // post the current reservation to the corresponding room with the current room id in state
+  postReservationData() {
+    // declare the reservation data to post
+    let reservation = {
+      check_in: this.state.checkInDateMomentObj.format('YYYY-MM-DD'),
+      check_out: this.state.checkOutDateMomentObj.format('YYYY-MM-DD')
+    }
+    $.post(`/rooms/${this.state.roomId}/reservation`, reservation, () => {
+      console.log("POST request succeed");
+      // clear the posted reservation data
+      this.clearDate();
+      // get the updated data of the corresponding room
+      this.getRoomData(this.state.roomId);
+    });
+  }
+
   componentDidMount(){
     // get a random room id
-    let roomID = Math.floor(Math.random() * 100) + 1;
+    let roomID = 1;
     this.getRoomData(roomID);
   }
 
@@ -164,7 +186,7 @@ class App extends React.Component {
       };
     }
 
-    let submitButton = <Button style={buttonStyle} onMouseEnter={this.toggleHover.bind(this)} onMouseLeave={this.toggleHover.bind(this)} onMouseMove={this.handleMouseMove.bind(this)}><ButtonWord>Check availability</ButtonWord></Button>;
+    let submitButton = <Button style={buttonStyle} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover} onMouseMove={this.handleMouseMove}><ButtonWord>Check availability</ButtonWord></Button>;
 
     // if check in date and check out date is already selected
     if (this.state.checkInDateMomentObj && this.state.checkOutDateMomentObj) {
@@ -181,7 +203,7 @@ class App extends React.Component {
       // update feeList
       feeList = <FeeList nightly_fee={this.state.nightly_fee} totalNight={totalNight} totalNightlyFee={totalNightlyFee} cleaningFee={cleaningFee} serviceFee={serviceFee} totalFee={totalFee}/>
       // update submit button
-      submitButton = <Button style={buttonStyle} onMouseEnter={this.toggleHover.bind(this)} onMouseLeave={this.toggleHover.bind(this)} onMouseMove={this.handleMouseMove.bind(this)}><ButtonWord>Reserve</ButtonWord></Button>;
+      submitButton = <Button onClick={this.postReservationData} style={buttonStyle} onMouseEnter={this.toggleHover} onMouseLeave={this.toggleHover} onMouseMove={this.handleMouseMove}><ButtonWord>Reserve</ButtonWord></Button>;
     }
 
     return(
