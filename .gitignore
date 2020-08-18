@@ -9,3 +9,6 @@ public/bundle.js
 
 # mysql config
 config.js
+
+# test coverage folder
+coverage/

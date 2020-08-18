@@ -40,12 +40,12 @@ const generateRooms = function(callback) {
   }
 }
 
-// create a function that generate 0 to 15 reservations for input roomID and insert into reservations table
+// create a function that generate 1 to 15 reservations for input roomID and insert into reservations table
 const generateReservations = function(roomID, minimumStay) {
   // create an array to store the all booked_dates for the input roomID
   let dates = [];
-  // generate a random number of reservations between 0 and 15 for the input roomID
-  let numOfReservation = Math.floor(Math.random() * 16);
+  // generate a random number of reservations between 1 and 15 for the input roomID
+  let numOfReservation = Math.floor(Math.random() * 15) + 1;
   // iterate over the number of reservations
   for (let i = 0; i < numOfReservation; i++) {
     // generate a random booked_date that between today and next 180 days for the current reservation
