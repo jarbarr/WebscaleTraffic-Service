@@ -4,7 +4,7 @@ const bodyParser = require('body-parser');
 const moment = require('moment');
 const db = require('../database/index.js');
 const app = express();
-const PORT = 3001;
+const PORT = 3002;
 
 // Middleware
 app.use(bodyParser.json());
