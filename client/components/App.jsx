@@ -120,7 +120,7 @@ class App extends React.Component {
 
   componentDidMount(){
     // get a random room id
-    let roomID = 1;
+    let roomID = Math.floor(Math.random() * 100) + 1;
     this.getRoomData(roomID);
   }
 
