@@ -9,7 +9,7 @@ const PORT = 3002;
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(express.static('public'));
+app.use('/rooms/:room_id', express.static('public'));
 
 // Route
 // GET request to '/rooms/:room_id/reservation' route

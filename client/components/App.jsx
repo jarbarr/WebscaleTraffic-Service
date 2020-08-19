@@ -119,8 +119,8 @@ class App extends React.Component {
   }
 
   componentDidMount(){
-    // get a random room id
-    let roomID = Math.floor(Math.random() * 100) + 1;
+    // get a room id by path
+    let roomID = window.location.pathname.split('/')[2];
     this.getRoomData(roomID);
   }
 
