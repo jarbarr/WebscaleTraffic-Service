@@ -75,6 +75,9 @@ class App extends React.Component {
       checkOutDateMomentObj: null,
       mouseX: 0,
       mouseY: 0,
+      adults: 1,
+      children: 0,
+      infants: 0,
       hover: false
     }
     this.getCheckInDate = this.getCheckInDate.bind(this);
@@ -83,6 +86,8 @@ class App extends React.Component {
     this.postReservationData = this.postReservationData.bind(this);
     this.toggleHover = this.toggleHover.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
+    this.add = this.add.bind(this);
+    this.subtract = this.subtract.bind(this);
   }
 
   // get all the informations and reservations of a specify room with the input room id
@@ -141,7 +146,10 @@ class App extends React.Component {
   clearDate() {
     this.setState({
       checkInDateMomentObj: null,
-      checkOutDateMomentObj: null
+      checkOutDateMomentObj: null,
+      adults: 1,
+      children: 0,
+      infants: 0
     });
   }
 
@@ -169,6 +177,52 @@ class App extends React.Component {
       mouseY: event.clientY - event.target.getBoundingClientRect().top
     });
     console.log(this.state.mouseX, this.state.mouseY);
+  }
+
+  subtract(guestType) {
+    if (guestType === 'Adults') {
+      if (this.state.adults > 1) {
+        this.setState({
+          adults: this.state.adults - 1
+        });
+      }
+    } else if (guestType === 'Children') {
+      if (this.state.children > 0) {
+        this.setState({
+          children: this.state.children - 1
+        });
+      }
+    } else if (guestType === 'Infants') {
+      if (this.state.infants > 0) {
+        this.setState({
+          infants: this.state.infants - 1
+        });
+      }
+    }
+  }
+
+  add(guestType) {
+    console.log(guestType, "clicked")
+    if (guestType === 'Adults') {
+      console.log(guestType, "clicked2", this.state.adults, this.state.children, this.state.maximum_guest)
+      if (this.state.adults + this.state.children < this.state.maximum_guest) {
+        this.setState({
+          adults: this.state.adults + 1
+        });
+      }
+    } else if (guestType === 'Children') {
+      if (this.state.adults + this.state.children < this.state.maximum_guest) {
+        this.setState({
+          children: this.state.children + 1
+        });
+      }
+    } else if (guestType === 'Infants') {
+      if (this.state.infants < 5) {
+        this.setState({
+          infants: this.state.infants + 1
+        });
+      }
+    }
   }
 
   render() {
@@ -210,7 +264,21 @@ class App extends React.Component {
       <Container>
         <Menu>
           <RoomBasicData nightly_fee={this.state.nightly_fee} rating={this.state.rating} reviews={this.state.reviews}/>
-          <Options minimum_stay={this.state.minimum_stay} maximum_guest={this.state.maximum_guest} booked_date={this.state.booked_date} getCheckInDate={this.getCheckInDate} getCheckOutDate={this.getCheckOutDate} checkInDateMomentObj={this.state.checkInDateMomentObj} checkOutDateMomentObj={this.state.checkOutDateMomentObj} clearDate={this.clearDate}/>
+          <Options
+            minimum_stay={this.state.minimum_stay}
+            maximum_guest={this.state.maximum_guest}
+            booked_date={this.state.booked_date}
+            getCheckInDate={this.getCheckInDate}
+            getCheckOutDate={this.getCheckOutDate}
+            checkInDateMomentObj={this.state.checkInDateMomentObj}
+            checkOutDateMomentObj={this.state.checkOutDateMomentObj}
+            clearDate={this.clearDate}
+            adults={this.state.adults}
+            children={this.state.children}
+            infants={this.state.infants}
+            add={this.add}
+            subtract={this.subtract}
+          />
           {submitButton}
           {feeList}
         </Menu>
