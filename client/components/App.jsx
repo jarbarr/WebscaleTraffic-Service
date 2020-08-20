@@ -165,8 +165,8 @@ class App extends React.Component {
 
   handleMouseMove(event) {
     this.setState({
-      mouseX: Math.round(event.pageX / $(window).width() * 100),
-      mouseY: Math.round(event.pageY / $(window).width() * 100)
+      mouseX: event.clientX - event.target.getBoundingClientRect().left,
+      mouseY: event.clientY - event.target.getBoundingClientRect().top
     });
     console.log(this.state.mouseX, this.state.mouseY);
   }
@@ -182,7 +182,7 @@ class App extends React.Component {
 
     if (this.state.hover) {
       buttonStyle = {
-        'background': `radial-gradient(circle at ${this.state.mouseX}% ${this.state.mouseY}%, #FF385C 0%, #E61E4D 27.5%, #E31C5F 40%, #D70466 57.5%, #BD1E59 75%, #BD1E59 100%)`,
+        'background': `radial-gradient(circle at ${this.state.mouseX}px ${this.state.mouseY}px, #FF385C 0%, #E61E4D 27.5%, #E31C5F 40%, #D70466 57.5%, #BD1E59 75%, #BD1E59 100%)`,
       };
     }
 
