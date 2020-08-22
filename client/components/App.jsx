@@ -102,7 +102,15 @@ class App extends React.Component {
         reviews : data[0].reviews,
         minimum_stay : data[0].minimum_stay,
         maximum_guest : data[0].maximum_guest,
-        booked_date : data.map(reservation => reservation.booked_date)
+        /*
+         * In the localhost database, the retrieved date is formated like 2020-09-01T07:00:00.000Z,
+         * as this date transformed to moment object, the date will be stay the same (2020-09-01).
+         * In the database pulled from the DockerHub, the retrieved date is formated like 2020-09-01T00:00:00.000Z,
+         * as this date transformed to moment object, the date will be ROUNDED to the last date (2020-08-31).
+         * Since the time zones are different, in order to prevent the dated rounded to the last date,
+         * we need to take out the time zone by using slice
+         */
+        booked_date : data.map(reservation => reservation.booked_date.slice(0, 10))
       });
     });
   }
