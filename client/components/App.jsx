@@ -7,15 +7,12 @@ import Options from './Options.jsx';
 import FeeList from './FeeList.jsx';
 
 const Container = styled.div`
-  max-width: 1280px;
-  padding-left: 80px;
-  padding-right: 80px;
+  width: 420px;
   margin-right: auto;
   margin-left: auto;
 `;
 
 const Menu = styled.div`
-  margin-left: 66.66666%;
   position: sticky;
   top: 80px;
   margin-top: 48px;
