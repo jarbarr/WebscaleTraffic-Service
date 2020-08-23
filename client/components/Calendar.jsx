@@ -456,7 +456,7 @@ class Calendar extends React.Component {
     let nextButton = <PrevNextButton onClick={(e) => this.nextMonth()}>{rightArrow}</PrevNextButton>
 
     // if currentMonthMomentObj is equal to the actual CURRENT MONTH
-    if (currentMonthMomentObj.format('MMMM') === moment().format('MMMM')) {
+    if (currentMonthMomentObj.format('MMMM YYYY') === moment().format('MMMM YYYY')) {
       // disable the prevButton
       prevButton = <DisablePrevButton>{leftArrow}</DisablePrevButton>;
     }
