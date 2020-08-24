@@ -1,0 +1,12 @@
+## MAC files ##
+.DS_Store
+
+## NPM ##
+node_modules/
+package-lock.json
+
+# mysql config
+config.js
+
+# test file
+coverage/

@@ -2,14 +2,21 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const moment = require('moment');
+const path = require('path');
+const expressStaticGzip = require("express-static-gzip");
 const db = require('../database/index.js');
+
 const app = express();
 const PORT = 3002;
+const publicPath = path.join(__dirname, '/../public');
 
 // Middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
-app.use('/rooms/:room_id', express.static('public'));
+app.use('/rooms/:room_id', expressStaticGzip(publicPath, {
+  enableBrotli: true,
+  orderPreference: ['br']
+}));
 
 // Route
 // GET request to '/rooms/:room_id/reservation' route

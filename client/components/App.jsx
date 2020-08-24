@@ -181,7 +181,6 @@ class App extends React.Component {
       mouseX: event.clientX - event.target.getBoundingClientRect().left,
       mouseY: event.clientY - event.target.getBoundingClientRect().top
     });
-    console.log(this.state.mouseX, this.state.mouseY);
   }
 
   subtract(guestType) {
@@ -207,9 +206,7 @@ class App extends React.Component {
   }
 
   add(guestType) {
-    console.log(guestType, "clicked")
     if (guestType === 'Adults') {
-      console.log(guestType, "clicked2", this.state.adults, this.state.children, this.state.maximum_guest)
       if (this.state.adults + this.state.children < this.state.maximum_guest) {
         this.setState({
           adults: this.state.adults + 1
