@@ -43,6 +43,7 @@ app.get('/rooms/:room_id/reservation', (req, res) => {
 // POST request to '/rooms/:room_id/reservation' route
 app.post('/rooms/:room_id/reservation', (req, res) => {
   model.postRooms(req, (err) => {
+    Console.log(req.body);
     if (err) {
       // Console.log(`Failed to insert data to
       //  reservations table where room id = ${req.params.room_id}:`, err);

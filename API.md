@@ -1,25 +1,23 @@
 # CRUD API Operations #
 
 ## GET ##
+> room reservation info
 
-### goal ###
-get room reservation info
+### endpoint ###
+>/rooms/:room_id/reservation
 
-[endpoint]:
-`/rooms/:room_id/reservation`
-
-#### Request ####
-Params:
+### Path Parameters ###
 > room_id: 'id'
 
-**Status Codes**
-> success: 200
-> error: 404
+### Success Status Code: ###
+> 200
 
-#### Response ####
 
-**Format**
-> JSON
+### Response ###
+
+Format:
+> JSON object
+Properties:
 
     {
     "nightly_fee": "Number",
@@ -32,71 +30,60 @@ Params:
     }
 
 ## POST ##
+>Schedule Reservation
 
-### goal ###
-Schedule Reservation
+### endpoint: ###
+>/rooms/:room_id/reservation
 
-[endpoint]
-`/rooms/:room_id/reservation`
+### Path Parameters ###
+> room_id: 'id'
 
-**Status Codes**
-> success: 201
-> error: 400
+### Success Status Code: ###
+> 201
 
-#### Request ####
-
-Body: JSON object
+### Request Body ###
+Expects JSON with the following keys:
 
     {
-      "name": "String",
-      "address": "String",
-      "phone": "String",
-      "website": "String",
-      "googleMap": "String location",
-      "cost": "Number"
+      "check_in": "Date",
+      "check_out": "Date"
     }
 
-#### Response ####
 
-<!-- Update restaurant info
-PATCH /api/restaurant/:id
-Path Parameters:
 
-id restaurant id
-Success Status Code: 204
+## PUT ##
+>Update reservation
+
+### endpoint: ###
+>/rooms/:room_id/reservation/:reservation_id
+
+### Path Parameters ###
+> room_id: 'id'
+
+>reservation_id: 'id'
+
+### Success Status Code: ###
+>200
 
 Request Body: Expects JSON with any of the following keys (include only keys to be updated)
 
     {
-      "name": "String",
-      "address": "String",
-      "phone": "String",
-      "website": "String",
-      "cost": "Number"
+      "check_in": "Date",
+      "check_out": "Date"
     }
-Delete restaurant
-DELETE /api/restaurant/:id
-Path Parameters:
 
-id restaurant id
-Success Status Code: 204
 
-Add image to restaurant
-POST /api/restaurants/:restaurantId/images
-Path Parameters:
+## DELETE ##
+Delete reservation
 
-restaurantId restaurant id
-Success Status Code: 201
+### endpoint ###
+>/api/restaurant/:id
 
-Request Body: Expects JSON with the following keys.
+### Path Parameters ###
+> room_id: 'id'
 
-    {
-      "user": "String",
-      "image": "image URL",
-      "description": "String",
-      "posted": "YYYY-MM-MM",
-      "googleMap": "String location",
-      "category": "String",
-      "restaurant": "id Number",
-      "cost": "Number"
-    } -->
+>reservation_id: 'id'
+
+### Success Status Code: ###
+>202
+

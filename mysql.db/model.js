@@ -15,7 +15,7 @@ module.exports = {
         Console.error(err);
         callback(err, null);
       } else {
-        Console.log('here is data from db!');
+        // Console.log('here is data from db!');
         callback(null, results);
       }
     }));
@@ -41,6 +41,7 @@ module.exports = {
         if (err) {
           callback(err, null);
         } else {
+          // Console.log('post successful!');
           callback(null, results);
         }
       });

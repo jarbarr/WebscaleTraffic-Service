@@ -1,6 +1,8 @@
 const mysql = require('mysql');
 const config = require('./config.js');
 
+const Console = console;
+
 const connection = mysql.createConnection({
   host: 'localhost',
   user: config.user,
@@ -10,9 +12,9 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
   if (err) {
-    console.log(err);
+    Console.log(err);
   } else {
-    console.log('connected to DB!');
+    Console.log('connected to DB!');
   }
 });
 
