@@ -6,7 +6,7 @@ node_modules/
 package-lock.json
 
 # mysql config
-config.js
+index.js
 
 # test file
 coverage/

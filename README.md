@@ -1,12 +1,12 @@
-# Airbnb Calendar
+# Airbnb Calendar - Revamp
 
-> A clone of Airbnb calendar component
+> Revamp the clone of Airbnb calendar component
 
 ## Related Projects
 
-  - https://github.com/7LuckyAirbnboiiz/gallery
-  - https://github.com/7LuckyAirbnboiiz/reviews-section
-  - https://github.com/7LuckyAirbnboiiz/image_carousel
+  - https://github.com/Webscale-Traffic/review-module.git
+  - https://github.com/Webscale-Traffic/More-places-to-stay-carousel.git
+  - https://github.com/Webscale-Traffic/review-module.git
 
 ## Table of Contents
 
@@ -22,7 +22,7 @@
 
 An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 
-- Node 6.13.0
+- Node 10
 - etc
 
 ## Development
@@ -32,7 +32,8 @@ An `nvmrc` file is included if using [nvm](https://github.com/creationix/nvm).
 From within the root directory:
 
 ```sh
-npm install -g webpack
+
 npm install
+
 ```
 
