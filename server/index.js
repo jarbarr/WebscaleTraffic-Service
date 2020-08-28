@@ -5,7 +5,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const expressStaticGzip = require('express-static-gzip');
-const model = require('../mysql.db/model.js');
+const mysql = require('../mysql.db/model.js');
+const pgdb = require('../postgresql.db/model.js');
+const cassandra = require('../cassandra.db/index.js');
 
 const app = express();
 const PORT = 3002;
@@ -15,9 +17,9 @@ const Console = console;
 // ============================================================ //
 // Middleware
 //  ----------------------------------------------------------- //
-app.use('/rooms/:room_id', bodyParser.json());
-app.use('/rooms/:room_id', bodyParser.urlencoded({ extended: true }));
-app.use('/rooms/:room_id', expressStaticGzip(publicPath, {
+app.use('/properties/:property_id', bodyParser.json());
+app.use('/properties/:property_id', bodyParser.urlencoded({ extended: true }));
+app.use('/properties/:property_id', expressStaticGzip(publicPath, {
   enableBrotli: true,
   orderPreference: ['br'],
 }));
@@ -25,12 +27,12 @@ app.use('/rooms/:room_id', expressStaticGzip(publicPath, {
 // ============================================================ //
 // Routes
 //  ----------------------------------------------------------- //
-// GET request to '/rooms/:room_id/reservation' route
-app.get('/rooms/:room_id/reservation', (req, res) => {
-  model.getRooms(req.params, (err, results) => {
+// GET request to '/properties/:property_id/reservation' route
+app.get('/properties/:property_id/reservations', (req, res) => {
+  mysql.getProperties(req.params, (err, results) => {
     if (err) {
       // Console.log('Failed to get data from databases: ', err);
-      Console.log(':*(');
+      // Console.log(':*(');
       res.status(404).send(err);
     } else {
       // Console.log('Succeed to get data from databases', results);
@@ -40,20 +42,52 @@ app.get('/rooms/:room_id/reservation', (req, res) => {
   });
 });
 
-// POST request to '/rooms/:room_id/reservation' route
-app.post('/rooms/:room_id/reservation', (req, res) => {
-  model.postRooms(req, (err) => {
+// POST request to '/properties/:property_id/reservation' route
+app.post('/properties/:property_id/reservations', (req, res) => {
+  mysql.addReservation(req.body, (err) => {
     Console.log(req.body);
     if (err) {
       // Console.log(`Failed to insert data to
-      //  reservations table where room id = ${req.params.room_id}:`, err);
+      //  reservations table where property id = ${req.params.property_id}:`, err);
       // Console.log('post no work');
-      res.status(418).send(err);
+      res.status(400).send(err);
     } else {
       // Console.log(`Success to insert data
-      // to reservations table where room id = ${req.params.room_id}`);
+      // to reservations table where property id = ${req.params.property_id}`);
       // Console.log('post works', results);
       res.status(201).send();
+    }
+  });
+});
+app.put('/properties/:property_id/reservations/:reservation_id', (req, res) => {
+  mysql.updateReservation(req.body, (err) => {
+    // Console.log(req.body);
+    if (err) {
+      // Console.log(`Failed to insert data to
+      //  reservations table where property id = ${req.params.property_id}:`, err);
+      // Console.log('post no work');
+      res.status(400).send(err);
+    } else {
+      // Console.log(`Success to insert data
+      // to reservations table where property id = ${req.params.property_id}`);
+      // Console.log('post works', results);
+      res.status(200).send();
+    }
+  });
+});
+app.delete('/properties/:property_id/reservations/:reservation_id', (req, res) => {
+  mysql.deleteReservation(req.body, (err) => {
+    // Console.log(req.body);
+    if (err) {
+      // Console.log(`Failed to insert data to
+      //  reservations table where property id = ${req.params.property_id}:`, err);
+      // Console.log('post no work');
+      res.status(405).send(err);
+    } else {
+      // Console.log(`Success to insert data
+      // to reservations table where property id = ${req.params.property_id}`);
+      // Console.log('post works', results);
+      res.status(202).send();
     }
   });
 });

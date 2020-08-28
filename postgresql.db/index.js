@@ -1,27 +1,47 @@
-const mysql = require('mysql');
-const config = require('./config.js');
+// const postgres = require('postgres');
+const { Client } = require('pg');
+// const config = require('./config.js');
 
-const connection = mysql.createConnection({
+const Console = console;
+
+const client = new Client({
+  user: 'jarbarr',
   host: 'localhost',
-  user: config.user,
-  password: config.pw,
   database: 'calendar',
+  password: '',
+  port: 5432,
 });
 
-connection.connect((err) => {
+client.connect((err) => {
   if (err) {
-    console.log(err);
+    Console.log(err);
   } else {
-    console.log('connected to DB!');
+    Console.log('connected to postgres!');
   }
 });
 
-module.exports = connection;
+module.exports = client;
 
-// For docker network
-// module.exports.connection = mysql.createConnection({
-//   host     : '172.17.0.2',
-//   user     : 'root',
-//   database : 'calendar',
-//   port     : '3306'
+// ==============================================================
+// For Connecting to Postgres Directly rather than through
+
+// const sql = postgres({
+//   host        : '',         // Postgres ip address or domain name
+//   port        : 5432,       // Postgres server port
+//   path        : '',         // unix socket path (usually '/tmp')
+//   database    : 'ca',         // Name of database to connect to
+//   username    : 'jarbarr',         // Username of database user
+//   password    : ''         // Password of database user
+//   ssl         : false,      // True, or options for tls.connect
+//   max         : 10,         // Max number of connections
+//   timeout     : 0,          // Idle connection timeout in seconds
+//   types       : [],         // Array of custom types, see more below
+//   onnotice    : fn,          // Defaults to console.log
+//   onparameter : fn,          // (key, value) when server param change
+//   debug       : fn,          // Is called with (connection, query, parameters)
+//   transform   : {
+//     column            : fn, // Transforms incoming column names
+//     value             : fn, // Transforms incoming row values
+//     row               : fn  // Transforms entire rows
+//   },
 // });

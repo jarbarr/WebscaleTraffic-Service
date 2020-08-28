@@ -14,7 +14,7 @@ connection.connect((err) => {
   if (err) {
     Console.log(err);
   } else {
-    Console.log('connected to DB!');
+    Console.log('connected to mysql!');
   }
 });
 

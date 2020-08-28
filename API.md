@@ -4,7 +4,7 @@
 > room reservation info
 
 ### endpoint ###
->/rooms/:room_id/reservation
+>/rooms/:room_id/reservations
 
 ### Path Parameters ###
 > room_id: 'id'
@@ -16,24 +16,24 @@
 ### Response ###
 
 Format:
-> JSON object
-Properties:
-
-    {
-    "nightly_fee": "Number",
-    "rating": "Number",
-    "reviews": "Number",
-    "minimum_stay": "Number",
-    "maximum_guest": "Number",
-    "id": "Number",
-    "booked_date": "Date"
-    }
+> array of JSON objects with the following properties:
+    [
+      {
+      "nightly_fee": "Number",
+      "rating": "Number",
+      "reviews": "Number",
+      "minimum_stay": "Number",
+      "maximum_guest": "Number",
+      "id": "Number",
+      "booked_date": "Date"
+      }
+    ]
 
 ## POST ##
->Schedule Reservation
+>Schedule Reservations
 
 ### endpoint: ###
->/rooms/:room_id/reservation
+>/rooms/:room_id/reservations
 
 ### Path Parameters ###
 > room_id: 'id'
@@ -55,7 +55,7 @@ Expects JSON with the following keys:
 >Update reservation
 
 ### endpoint: ###
->/rooms/:room_id/reservation/:reservation_id
+>/rooms/:room_id/reservations/:reservation_id
 
 ### Path Parameters ###
 > room_id: 'id'
@@ -63,7 +63,7 @@ Expects JSON with the following keys:
 >reservation_id: 'id'
 
 ### Success Status Code: ###
->200
+>204
 
 Request Body: Expects JSON with any of the following keys (include only keys to be updated)
 
@@ -77,7 +77,7 @@ Request Body: Expects JSON with any of the following keys (include only keys to 
 Delete reservation
 
 ### endpoint ###
->/api/restaurant/:id
+>/rooms/:room_id/reservations/:reservationid
 
 ### Path Parameters ###
 > room_id: 'id'
@@ -85,5 +85,12 @@ Delete reservation
 >reservation_id: 'id'
 
 ### Success Status Code: ###
->202
+>204
+
+Request Body: Expects JSON with any of the following keys (include only keys to be updated)
+
+    {
+      "check_in": "Date",
+      "check_out": "Date"
+    }
 

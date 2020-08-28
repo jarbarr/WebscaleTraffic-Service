@@ -25,7 +25,7 @@ let generateRooms = (callback) => {
       maximum_guest = Math.floor(Math.random() * 7) + 2;
     }
     // declare query string
-    let queryString = 'INSERT INTO rooms (nightly_fee, rating, reviews, minimum_stay, maximum_guest) VALUES (?, ?, ?, ?, ?)';
+    let queryString = 'INSERT INTO properties (nightly_fee, rating, reviews, minimum_stay, maximum_guest) VALUES (?, ?, ?, ?, ?)';
     // declare query params
     let queryParams = [nightly_fee, rating, reviews, minimum_stay, maximum_guest];
     // insert data into rooms table by mysql query function
@@ -75,7 +75,7 @@ let generateReservations = (roomID, minimumStay) => {
   // After get all booked dates for this the input roomID, iterate over the dates array
   for (let i = 0; i < dates.length; i++) {
     // declare query string
-    let queryString = 'INSERT INTO reservations (room_id, booked_date) VALUES (?, ?)';
+    let queryString = 'INSERT INTO reservations (property_id, booked_date) VALUES (?, ?)';
     // declare query params
     let queryParams = [roomID, dates[i]];
     // insert current date into reservations table where room_id

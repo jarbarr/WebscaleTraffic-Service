@@ -4,11 +4,11 @@ const db = require('./index.js');
 const Console = console;
 
 module.exports = {
-  getRooms: (req, callback) => {
+  getProperties: (req, callback) => {
     // declare query string
-    const queryString = 'SELECT rooms.nightly_fee, rooms.rating, rooms.reviews, rooms.minimum_stay, rooms.maximum_guest, reservations.id, reservations.booked_date FROM rooms, reservations WHERE rooms.id = ? AND rooms.id = reservations.room_id ORDER BY reservations.booked_date;';
+    const queryString = 'SELECT properties.nightly_fee, properties.rating, properties.reviews, properties.minimum_stay, properties.maximum_guest, reservations.id, reservations.booked_date FROM properties, reservations WHERE properties.id = ? AND properties.id = reservations.property_id ORDER BY reservations.booked_date;';
     // declare query params
-    const queryParams = [req.room_id];
+    const queryParams = [req.property_id];
     // get all the informations and reservations of a specify room with the room_id from endpoint
     db.query(queryString, queryParams, ((err, results) => {
       if (err) {
@@ -20,7 +20,7 @@ module.exports = {
       }
     }));
   },
-  postRooms: (req, callback) => {
+  addReservation: (req, callback) => {
     // get the check_in date from request
     const check_in = moment(req.body.check_in);
     // get the check_out date from request
@@ -45,5 +45,25 @@ module.exports = {
         }
       });
     }
+  },
+  updateReservation: (req, callback) => {
+    const queryString = `UPDATE reservations SET check_in = ${reservation.checkIn}, check_out = ${reservation.checkOut} WHERE id = ${reservation.id} `;
+    db.query(queryString, (err, results) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        callback(null, results);
+      }
+    });
+  },
+  deleteReservation: (req, callback) => {
+    const queryString = `DELETE FROM reservations WHERE id = ${reservation.id} `;
+    db.query(queryString, (err, results) => {
+      if (err) {
+        callback(err, null);
+      } else {
+        callback(null, results);
+      }
+    });
   },
 };

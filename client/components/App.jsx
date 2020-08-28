@@ -28,6 +28,7 @@ class App extends React.Component {
       adults: 1,
       children: 0,
       infants: 0,
+      rez_id: 0,
       hover: false,
     };
     this.getCheckInDate = this.getCheckInDate.bind(this);
@@ -39,26 +40,28 @@ class App extends React.Component {
     this.add = this.add.bind(this);
     this.subtract = this.subtract.bind(this);
     this.getTotalNight = this.getTotalNight.bind(this);
+    this.getRoomData = this.getRoomData.bind(this);
   }
 
   componentDidMount() {
     // get a room id by path
-    let roomID = window.location.pathname.split('/')[2];
-    this.getRoomData(roomID);
+    let propertyID = window.location.pathname.split('/')[2];
+    this.getRoomData(propertyID);
   }
 
   // get all the informations and reservations of a specify room with the input room id
-  getRoomData(roomID) {
-    $.get(`/rooms/${roomID}/reservation`, (data) => {
-      // console.log("GET request sent");
+  getRoomData(propertyID) {
+    $.get(`/properties/${propertyID}/reservations`, (data) => {
+      Console.log(data);
       this.setState({
-        roomId: roomID,
+        roomId: propertyID,
         allData: data,
         nightly_fee: data[0].nightly_fee,
         rating: data[0].rating,
         reviews: data[0].reviews,
         minimum_stay: data[0].minimum_stay,
         maximum_guest: data[0].maximum_guest,
+        rez_id: data[0].id,
         /*
          * In the localhost database, the retrieved date is formated like 2020-09-01T07:00:00.000Z,
          * as this date transformed to moment object, the date will be stay the same (2020-09-01).
@@ -119,6 +122,15 @@ class App extends React.Component {
         Console.log(data);
       });
   }
+
+  // updateReservationData() {
+  //   let roomID = window.location.pathname.split('/')[2];
+  //   this.getRoomData(roomID);
+  //   $.get(`/rooms/${roomID}/reservation`, (data) => {
+  //     pull rez id for corresponding check in and check out then call
+  //     put request
+  //   });
+  // }
 
   clearDate() {
     this.setState({
