@@ -1,6 +1,6 @@
 const faker = require('faker');
 const db = require('./index.js');
-
+const moment = require('moment');
 const Console = console;
 
 // let date = `${faker.date.weekday()}`;
@@ -17,11 +17,11 @@ const createProperties = (callback) => {
     let pick = Math.round(faker.random.number({ min: 0, max: 9 })); // between 3.80 and 5 (exclusive) points
     let rating = ratingOptions[pick];
     let nightly_fee;
-    if (rating < 2) {
+    if (rating <= 2) {
       nightly_fee = faker.random.number({ min: 50, max: 200 }); // between 50 and 300 dollars
     } else if (rating > 2 && rating < 3.5) {
       nightly_fee = faker.random.number({ min: 200, max: 400 }); // between 50 and 300 dollars
-    } else if (rating > 3.5) {
+    } else if (rating >= 3.5) {
       nightly_fee = faker.random.number({ min: 400, max: 1000 }); // between 50 and 300 dollars
     }
     let reviews = faker.random.number({ min: 5, max: 100 }); // between 5 and 300 reviews
@@ -29,7 +29,7 @@ const createProperties = (callback) => {
     let maximum_guest = faker.random.number({ min: 1, max: 5 }); // between 1 and 3 nights
     let cleaning_fee;
     let service_fee; // ranges from 50 to 100 based on rating
-    if (rating > 3) {
+    if (rating >= 3) {
       service_fee = faker.random.number({ min: 80, max: 150 });
     } else if (rating < 3) {
       service_fee = faker.random.number({ min: 20, max: 80 });
@@ -43,9 +43,9 @@ const createProperties = (callback) => {
     // specify database
     db.query(queryString, (error) => {
       if (error) {
-        Console.log(`Failure! property ${i} not inserted into properties table: `, error);
+        Console.log(`Failure! property ${i} not inserted into properties table: `, error, nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, total );
       } else {
-        Console.log(`Success! Property ${i} inserted into properties table`);
+        Console.log(`Success! Property ${i} inserted into properties table:`, nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, total);
         callback(i, minimum_stay);
       }
     });
@@ -65,27 +65,27 @@ let createReservations = (propertyID, minimumStay) => {
     let booking_id = faker.random.number({ min: 2000, max: 10000 });
     // generate a random number of stay between minimumStay and 10 for the current reservation
     let lengthOfStay = faker.random.number({ min: 0, max: 10 }) + minimumStay;
-    let randomDate = faker.date.future();
+    const today = moment(new Date).format('YYYY-MM-DD');
+    const days = faker.random.number({ min: 1, max: 20 })
+    const months = faker.random.number({ min: 1, max: 4 })
+    let addMonths = moment(today).add(months, 'months').format('YYYY-MM-DD');
+    let randomDate = moment(addMonths).add(days, 'days').format('YYYY-MM-DD');
     dates[propertyID] = [lengthOfStay, booking_id, randomDate];
   }
   /* eslint-disable */
-  // for (let property in dates) {
-    const property = Object.keys(dates)
-  for (let i = 0; i < property.length; i ++) {
-    for (let j = 0; j < dates[property][i][0]; j += 1) {
+  for (let property in dates) {
+    for (let j = 0; j < dates[property][0]; j += 1) {
       let booking = dates[property][2];
-      if (j > 0) {
-        let last = booking;
-        booking = faker.date.soon(1, last);
-      }
+      let last = booking;
+      booking = moment(last).add(j, 'days').format('YYYY-MM-DD');
       let rez = dates[property][1];
       // declare query string
-      let queryString = `INSERT INTO reservations (property_id, booking_id, booked_date) VALUES (${property}, ${rez}, ${booking})`;
+      let queryString = `INSERT INTO reservations (booking_id, property_id, booked_date) VALUES (${rez}, ${property}, '${booking}')`;
       db.query(queryString, (error) => {
         if (error) {
-          Console.log(`Failed to insert data to reservations table where room id = ${property}: `, error, property, rez, booking);
+          Console.log(`Failed to insert data to reservations table where property_id = ${property}: `, error, property, rez, booking, typeof(booking));
         } else {
-          Console.log(`Success to insert data to reservations table where room id = ${property}`);
+          Console.log(`Success to insert data to reservations table where property_id = ${property}`);
         }
       });
     }
