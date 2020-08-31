@@ -14,5 +14,3 @@ config.js
 coverage/
 
 # csv file
-csv.js
-csv.writestream.js
