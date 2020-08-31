@@ -1,94 +1,111 @@
-const moment = require('moment');
+const faker = require('faker');
 const db = require('./index.js');
+const moment = require('moment');
+const Console = console;
 
-// create a function that generate 100 individual rooms and insert into rooms table
-let generateRooms = (callback) => {
-  // iterate over 100 times
-  // i repesent room id, so need to start at 1
-  for (let i = 1; i <= 100; i++) {
+// generate 1000 properties
+const createProperties = (callback) => {
+  // generate 1000 properties
+  // example data will be 10
+  /* eslint-disable */
+  for (let i = 1; i <= 10; i += 1) {
+    const ratingOptions = [0, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
     // generate data for a room
-    let nightly_fee = Math.floor(Math.random() * 251) + 50; // between 50 and 300 dollars
-    let rating = Math.random() * (5 - 3.8) + 3.8; // between 3.80 and 5 (exclusive) points
-    let reviews = Math.floor(Math.random() * 296) + 5; // between 5 and 300 reviews
-    let minimum_stay = Math.floor(Math.random() * 3) + 1; // between 1 and 3 nights
-    let maximum_guest = 0;
-    // if nightly_fee is less than 100
-    if (nightly_fee <= 100) {
-      // set maximum guest to 1 and 3
-      maximum_guest = Math.floor(Math.random() * 3) + 1;
-    // if nightly_fee is larger than 100 and less than 200
-    } else if (nightly_fee > 100 && nightly_fee <= 200) {
-      // set maximum guest to 2 and 6
-      maximum_guest = Math.floor(Math.random() * 5) + 2;
-    } else {
-      // set maximum guest to 2 and 8
-      maximum_guest = Math.floor(Math.random() * 7) + 2;
+    let pick = Math.round(faker.random.number({ min: 0, max: 9 })); // between 3.80 and 5 (exclusive) points
+    let rating = ratingOptions[pick];
+    let nightly_fee;
+    if (rating <= 2) {
+      nightly_fee = faker.random.number({ min: 50, max: 200 }); // between 50 and 300 dollars
+    } else if (rating > 2 && rating < 3.5) {
+      nightly_fee = faker.random.number({ min: 200, max: 400 }); // between 50 and 300 dollars
+    } else if (rating >= 3.5) {
+      nightly_fee = faker.random.number({ min: 400, max: 1000 }); // between 50 and 300 dollars
     }
-    // declare query string
-    let queryString = 'INSERT INTO rooms (nightly_fee, rating, reviews, minimum_stay, maximum_guest) VALUES (?, ?, ?, ?, ?)';
-    // declare query params
-    let queryParams = [nightly_fee, rating, reviews, minimum_stay, maximum_guest];
+    let reviews = faker.random.number({ min: 5, max: 100 }); // between 5 and 300 reviews
+    let minimum_stay = faker.random.number({ min: 1, max: 5 }); // between 1 and 3 nights
+    let maximum_guest = faker.random.number({ min: 1, max: 5 }); // between 1 and 3 nights
+    let cleaning_fee;
+    let service_fee; // ranges from 50 to 100 based on rating
+    if (rating >= 3) {
+      service_fee = faker.random.number({ min: 80, max: 150 });
+    } else if (rating < 3) {
+      service_fee = faker.random.number({ min: 20, max: 80 });
+    }
+    cleaning_fee = 0.03 * (nightly_fee + service_fee); // 3% of subtotal
+
+    let subtotal = nightly_fee + cleaning_fee + service_fee;
+
+    let guests = faker.random(number({ min: 0, max: maximum_guest}));
+
+    const queryString = `INSERT INTO properties_by_details (nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, subtotal) VALUES (${nightly_fee}, ${rating}, ${reviews}, ${minimum_stay}, ${maximum_guest}, ${cleaning_fee}, ${service_fee}, ${subtotal})`;
     // insert data into rooms table by mysql query function
-    db.query(queryString, queryParams, (error, results, fields) => {
+    // specify database
+    db.query(queryString, (error) => {
       if (error) {
-        console.log(`Failed to insert room ${i} to rooms table: `, error);
+        Console.log(`Failure! property ${i} not inserted into properties table: `, error, nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, subtotal );
       } else {
-        console.log(`Succeed to insert room ${i} to rooms table`);
-        callback(i, minimum_stay);
+        Console.log(`Success! Property ${i} inserted into properties table:`, nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, subtotal);
+        callback(i, minimum_stay, subtotal, guests);
       }
     });
-  }
-}
-
-// create a function that generate 1 to 15 reservations for input roomID
-//  insert into reservations table
-let generateReservations = (roomID, minimumStay) => {
-  // create an array to store the all booked_dates for the input roomID
-  let dates = [];
-  // generate a random number of reservations between 1 and 15 for the input roomID
-  let numOfReservation = Math.floor(Math.random() * 15) + 1;
-  // iterate over the number of reservations
-  for (let i = 0; i < numOfReservation; i++) {
-    // generate a random booked_date that between today
-    // and next 180 days for the current reservation
-    // Math.random() * (max - min)) + min -> Math.random() * (Day after half year - Today)) + Today
-    let dateAfterHalfYear = new Date(moment().add(180, 'days'));
-    let booked_date = new Date(Math.random() * (moment(dateAfterHalfYear) - moment()) + moment());
-    // convert the booked_date format to the proper format of a DATE in MySQL database: YYYY-MM-DD
-    booked_date = moment(booked_date).format('YYYY-MM-DD');
-    // while the booked_date is already exist in the dates array
-    while (dates.includes(booked_date)) {
-      // regenerate and convert a random booked_date that between today
-      //  and next 180 days for the current reservation
-      booked_date = moment(new Date(Math.random() * (moment(dateAfterHalfYear) - moment()) + moment())).format('YYYY-MM-DD');;
-    }
-    // generate a random number of stay between minimumStay and 10 for the current reservation
-    let numOfStay = Math.floor(Math.random() * (10 - minimumStay + 1)) + minimumStay;
-    // iterate over the number of stay
-    for (let j = 0; j < numOfStay; j++) {
-      // push the booked_date to the dates array
-      dates.push(booked_date);
-      // add one day to the booked_date
-      booked_date = moment(booked_date).add(1, 'days').format('YYYY-MM-DD');
-    }
-  }
-  // After get all booked dates for this the input roomID, iterate over the dates array
-  for (let i = 0; i < dates.length; i++) {
-    // declare query string
-    let queryString = 'INSERT INTO reservations (room_id, booked_date) VALUES (?, ?)';
-    // declare query params
-    let queryParams = [roomID, dates[i]];
-    // insert current date into reservations table where room_id
-    //  is equal to the input roomID by mysql query function
-    db.query(queryString, queryParams, (error, results, fields) => {
+    const queryString = `INSERT INTO properties (nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, subtotal) VALUES (${nightly_fee}, ${rating}, ${reviews}, ${minimum_stay}, ${maximum_guest}, ${cleaning_fee}, ${service_fee}, ${subtotal})`;
+    // insert data into rooms table by mysql query function
+    // specify database
+    db.query(queryString, (error) => {
       if (error) {
-        console.log(`Failed to insert data to reservations table where room id = ${roomID}: `, error);
+        Console.log(`Failure! property ${i} not inserted into properties table: `, error, nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, subtotal );
       } else {
-        console.log(`Success to insert data to reservations table where room id = ${roomID}`);
+        Console.log(`Success! Property ${i} inserted into properties table:`, nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, subtotal);
+        callback(i, minimum_stay, subtotal, guests);
       }
     });
   }
 };
 
+// create a function that generate 1 to 15 reservations for input roomID
+//  insert into reservations table
+/* eslint-disable */
+let createReservations = (propertyID, minimumStay, subtotal, guests) => {
+  // create an array to store the all booked_dates for the input roomID
+  let dates = {};
+  // generate a random number of reservations between 1 and 15 for the input roomID
+  let numOfReservation = faker.random.number({ min: 5, max: 10 });
+  // iterate over the number of reservations
+  for (let i = 0; i < numOfReservation; i += 1) {
+    let booking_id = faker.random.number({ min: 2000, max: 10000 });
+    // generate a random number of stay between minimumStay and 10 for the current reservation
+    let lengthOfStay = faker.random.number({ min: 0, max: 10 }) + minimumStay;
+    const today = moment(new Date).format('YYYY-MM-DD');
+    const days = faker.random.number({ min: 1, max: 20 })
+    const months = faker.random.number({ min: 1, max: 4 })
+    let addMonths = moment(today).add(months, 'months').format('YYYY-MM-DD');
+    let randomDate = moment(addMonths).add(days, 'days').format('YYYY-MM-DD');
+    let total = subtotal * lengthOfStay
+    dates[propertyID] = [lengthOfStay, booking_id, randomDate, total, subtotal];
+  }
+  /* eslint-disable */
+  for (let property in dates) {
+    for (let j = 0; j < dates[property][0]; j += 1) {
+
+      let sum = dates[property][3]
+      let booking = dates[property][2];
+      let last = booking;
+      booking = moment(last).add(j, 'days').format('YYYY-MM-DD');
+      let rez = dates[property][1];
+
+      // declare query string
+      let queryString = `INSERT INTO reservations (booking_id, property_id, booked_date, total) VALUES (${rez}, ${property}, '${booking}', ${sum})`;
+      db.query(queryString, (error) => {
+        if (error) {
+          Console.log(`Failed to insert data to reservations table where property_id = ${property}: `, error, property, rez, booking, typeof(booking));
+        } else {
+          Console.log(`Success to insert data to reservations table where property_id = ${property}`);
+        }
+      });
+    }
+  }
+};
+
 // invoke generateRooms function
-generateRooms(generateReservations);
+createProperties(createReservations);
+// createReservations();

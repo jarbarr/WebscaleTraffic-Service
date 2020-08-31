@@ -12,3 +12,7 @@ config.js
 
 # test coverage folder
 coverage/
+
+# csv file
+csv.js
+csv.writestream.js

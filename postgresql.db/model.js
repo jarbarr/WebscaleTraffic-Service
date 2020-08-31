@@ -6,11 +6,11 @@ const Console = console;
 module.exports = {
   getProperties: (req, callback) => {
     // declare query string
-    const queryString = 'SELECT properties.nightly_fee, properties.rating, properties.reviews, properties.minimum_stay, properties.maximum_guest, reservations.id, reservations.booked_date FROM properties, reservations WHERE properties.id = ? AND properties.id = reservations.property_id ORDER BY reservations.booked_date;';
+    const queryString = `SELECT properties.nightly_fee, properties.rating, properties.reviews, properties.minimum_stay, properties.maximum_guest, properties.subtotal, reservations.id, reservations.booking_id, reservations.booked_date, reservations.total FROM properties, reservations WHERE properties.property_id = ${req.property_id} AND properties.property_id = reservations.property_id ORDER BY reservations.booked_date;`;
     // declare query params
-    const queryParams = [req.property_id];
+    // const queryParams = [req.property_id];
     // get all the informations and reservations of a specify room with the room_id from endpoint
-    db.query(queryString, queryParams, ((err, results) => {
+    db.query(queryString, ((err, results) => {
       if (err) {
         Console.error(err);
         callback(err, null);

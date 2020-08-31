@@ -28,8 +28,9 @@ class App extends React.Component {
       adults: 1,
       children: 0,
       infants: 0,
-      rez_id: 0,
+      reservation_total: 0,
       hover: false,
+      booking_id: [],
     };
     this.getCheckInDate = this.getCheckInDate.bind(this);
     this.getCheckOutDate = this.getCheckOutDate.bind(this);
@@ -40,28 +41,28 @@ class App extends React.Component {
     this.add = this.add.bind(this);
     this.subtract = this.subtract.bind(this);
     this.getTotalNight = this.getTotalNight.bind(this);
-    this.getRoomData = this.getRoomData.bind(this);
+    this.getPropertyData = this.getPropertyData.bind(this);
   }
 
   componentDidMount() {
-    // get a room id by path
+    // get a Property id by path
     let propertyID = window.location.pathname.split('/')[2];
-    this.getRoomData(propertyID);
+    this.getPropertyData(propertyID);
   }
 
-  // get all the informations and reservations of a specify room with the input room id
-  getRoomData(propertyID) {
+  // get all the informations and reservations of a specify Property with the input Property id
+  getPropertyData(propertyID) {
     $.get(`/properties/${propertyID}/reservations`, (data) => {
       Console.log(data);
       this.setState({
         roomId: propertyID,
-        allData: data,
-        nightly_fee: data[0].nightly_fee,
-        rating: data[0].rating,
-        reviews: data[0].reviews,
-        minimum_stay: data[0].minimum_stay,
-        maximum_guest: data[0].maximum_guest,
-        rez_id: data[0].id,
+        allData: data.rows,
+        nightly_fee: data.rows[0].nightly_fee,
+        rating: data.rows[0].rating,
+        reviews: data.rows[0].reviews,
+        minimum_stay: data.rows[0].minimum_stay,
+        maximum_guest: data.rows[0].maximum_guest,
+        reservtaion_total: data.rows[0].total,
         /*
          * In the localhost database, the retrieved date is formated like 2020-09-01T07:00:00.000Z,
          * as this date transformed to moment object, the date will be stay the same (2020-09-01).
@@ -70,7 +71,8 @@ class App extends React.Component {
          * Since the time zones are different, to prevent the dated rounded to the last date,
          * we need to take out the time zone by using slice
          */
-        booked_date: data.map(reservation => reservation.booked_date.slice(0, 10))
+        booked_date: data.rows.map((row) => row.booked_date.slice(0, 10)),
+        booking_id: data.rows.map((row) => row.booked_date.slice(0, 10)),
       });
     });
     // .done((data) => {
@@ -243,6 +245,7 @@ class App extends React.Component {
             minimum_stay={this.state.minimum_stay}
             maximum_guest={this.state.maximum_guest}
             booked_date={this.state.booked_date}
+            booking_id={this.state.booking_id}
             getCheckInDate={this.getCheckInDate}
             getCheckOutDate={this.getCheckOutDate}
             checkInDateMomentObj={this.state.checkInDateMomentObj}

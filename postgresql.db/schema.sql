@@ -22,7 +22,7 @@ CREATE TABLE properties (
   maximum_guest SMALLINT NOT NULL,
   cleaning_fee SMALLINT NOT NULL,
   service_fee SMALLINT NOT NULL,
-  total SMALLINT NOT NULL
+  subtotal SMALLINT NOT NULL
 );
 
 DROP TABLE IF EXISTS reservations;
@@ -31,7 +31,9 @@ DROP TABLE IF EXISTS reservations;
 CREATE TABLE reservations (
   id SERIAL,
   booking_id SMALLINT NOT NULL,
-  property_id INT,
+  property_id INT NOT NULL,
+  total INT NOT NULL,
+  guests SMALLINT,
   booked_date DATE NOT NULL,
   PRIMARY KEY (id),
     FOREIGN KEY(property_id)

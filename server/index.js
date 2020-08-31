@@ -29,7 +29,7 @@ app.use('/properties/:property_id', expressStaticGzip(publicPath, {
 //  ----------------------------------------------------------- //
 // GET request to '/properties/:property_id/reservation' route
 app.get('/properties/:property_id/reservations', (req, res) => {
-  mysql.getProperties(req.params, (err, results) => {
+  pgdb.getProperties(req.params, (err, results) => {
     if (err) {
       // Console.log('Failed to get data from databases: ', err);
       // Console.log(':*(');
