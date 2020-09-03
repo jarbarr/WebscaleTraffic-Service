@@ -12,6 +12,8 @@
     "seed1": "node mysql.db/seed.js",
     "seed2": "node postgresql.db/seed.js",
     "csv1": "node postgresql.db/csv.js",
+    "stream1": "node postgresql.db/csv.writeNProperties.js",
+    "stream2": "node cassandra.db/csv.js",
     "seed3": "node cassandra.db/seed.js",
     "test": "jest --coverage --colors"
   },
