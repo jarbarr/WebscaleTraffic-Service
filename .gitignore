@@ -11,8 +11,8 @@ public/bundle.js
 config.js
 
 # test coverage folder
-newrelics.js
-newrelics_agent.log
+newrelic.js
+newrelic_agent.log
 
 # csv file
 *.csv
