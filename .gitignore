@@ -12,6 +12,7 @@ config.js
 
 # test coverage folder
 newrelic.js
+newrelic_agent.log
 
 # csv file
 *.csv
