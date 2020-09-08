@@ -19,6 +19,8 @@ client.connect((err) => {
   }
 });
 
+module.exports = client;
+
 // ============================================================ //
 // Express Cassandra ORM - Optional
 //  ----------------------------------------------------------- //
@@ -57,5 +59,3 @@ client.connect((err) => {
 //     Console.log('connected to Cassandra', result.rows[0]);
 //   }
 // });
-
-module.exports = client;

@@ -42,7 +42,7 @@ module.exports = {
           // iterate over each day of each reservation
           let reservationsData = `${reservation_id},${reservationNum},${id},${checkinDate},${checkoutDate},${total},${guests}\n`;
           // console.log(reservationsData)
-          if (count === 0) {
+          if (count === 0 && numOfReservations) {
             writer.write(reservationsData, encoding, callback);
           } else {
             ok = writer.write(reservationsData, encoding);

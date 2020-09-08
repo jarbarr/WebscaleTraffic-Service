@@ -28,7 +28,6 @@
   },
   "homepage": "https://github.com/7LuckyAirbnboiiz/calendar#readme",
   "dependencies": {
-    "artillery": "^1.6.1",
     "body-parser": "^1.19.0",
     "cassandra-driver": "^4.6.0",
     "csv-write-stream": "^2.0.0",
@@ -39,6 +38,7 @@
     "jquery": "^3.5.1",
     "moment": "^2.27.0",
     "mysql": "^2.18.1",
+    "newrelic": "^6.13.0",
     "nodemon": "^2.0.4",
     "pg": "^8.3.3",
     "postgres": "^1.0.2",
@@ -51,6 +51,7 @@
     "@babel/core": "^7.11.1",
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
+    "artillery": "^1.6.1",
     "babel-loader": "^8.1.0",
     "brotli-webpack-plugin": "^1.1.0",
     "compression-webpack-plugin": "^5.0.1",

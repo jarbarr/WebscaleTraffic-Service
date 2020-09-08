@@ -37,7 +37,7 @@ const createProperties = (callback) => {
 
     let guests = faker.random(number({ min: 0, max: maximum_guest}));
 
-    const queryString = `INSERT INTO properties_by_details (nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, subtotal) VALUES (${nightly_fee}, ${rating}, ${reviews}, ${minimum_stay}, ${maximum_guest}, ${cleaning_fee}, ${service_fee}, ${subtotal})`;
+    let queryString = `INSERT INTO properties_by_details (nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, subtotal) VALUES (${nightly_fee}, ${rating}, ${reviews}, ${minimum_stay}, ${maximum_guest}, ${cleaning_fee}, ${service_fee}, ${subtotal})`;
     // insert data into rooms table by mysql query function
     // specify database
     db.query(queryString, (error) => {
@@ -48,7 +48,7 @@ const createProperties = (callback) => {
         callback(i, minimum_stay, subtotal, guests);
       }
     });
-    const queryString = `INSERT INTO properties (nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, subtotal) VALUES (${nightly_fee}, ${rating}, ${reviews}, ${minimum_stay}, ${maximum_guest}, ${cleaning_fee}, ${service_fee}, ${subtotal})`;
+    queryString = `INSERT INTO properties (nightly_fee, rating, reviews, minimum_stay, maximum_guest, cleaning_fee, service_fee, subtotal) VALUES (${nightly_fee}, ${rating}, ${reviews}, ${minimum_stay}, ${maximum_guest}, ${cleaning_fee}, ${service_fee}, ${subtotal})`;
     // insert data into rooms table by mysql query function
     // specify database
     db.query(queryString, (error) => {

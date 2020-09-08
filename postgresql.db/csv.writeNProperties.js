@@ -64,7 +64,7 @@ const writeProperties = fs.createWriteStream('./psqlproperties.csv');
 // writeProperties is the nested funciton object that with a write property that sets headers and controls the stream
 writeProperties.write('property_id,nightly_fee,rating,reviews,minimum_stay,maximum_guests,cleaning_fee,service_fee,subtotal\n', 'ascii');
 // set the value to 10m, add the write function object, the encoding and the callback which ends the stream as well as the reservations stream function
-writeNProperties(50, writeProperties, 'ascii', () => {
+writeNProperties(20, writeProperties, 'ascii', () => {
   writeProperties.end();
 }, reservations.writeNReservations);
 

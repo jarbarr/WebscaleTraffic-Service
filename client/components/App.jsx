@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import $ from 'jquery';
 import moment from 'moment';
@@ -6,14 +7,13 @@ import RoomBasicData from './RoomBasicData.jsx';
 import Options from './Options.jsx';
 import FeeList from './FeeList.jsx';
 
-const Console = console;
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      roomId: null,
+      propertyID: null,
       allData: [],
       nightly_fee: 0,
       rating: 0,
@@ -28,7 +28,9 @@ class App extends React.Component {
       adults: 1,
       children: 0,
       infants: 0,
+      reservation_id: 0,
       reservation_total: 0,
+      property_subtotal: 0,
       hover: false,
       booking_id: [],
     };
@@ -53,16 +55,18 @@ class App extends React.Component {
   // get all the informations and reservations of a specify Property with the input Property id
   getPropertyData(propertyID) {
     $.get(`/properties/${propertyID}/reservations`, (data) => {
-      Console.log(data);
+      console.log(data.rows);
       this.setState({
-        roomId: propertyID,
+        propertyID: propertyID,
         allData: data.rows,
         nightly_fee: data.rows[0].nightly_fee,
         rating: data.rows[0].rating,
         reviews: data.rows[0].reviews,
         minimum_stay: data.rows[0].minimum_stay,
-        maximum_guest: data.rows[0].maximum_guest,
-        reservtaion_total: data.rows[0].total,
+        maximum_guest: data.rows[0].guests,
+        property_subtotal: data.rows[0].subtotal,
+        reservation_total: data.rows[0].total,
+        reservation_id: data.rows.length,
         /*
          * In the localhost database, the retrieved date is formated like 2020-09-01T07:00:00.000Z,
          * as this date transformed to moment object, the date will be stay the same (2020-09-01).
@@ -71,12 +75,12 @@ class App extends React.Component {
          * Since the time zones are different, to prevent the dated rounded to the last date,
          * we need to take out the time zone by using slice
          */
-        booked_date: data.rows.map((row) => row.booked_date.slice(0, 10)),
-        booking_id: data.rows.map((row) => row.booked_date.slice(0, 10)),
+        // booked_date: data.rows.map((row) => row.booked_date.slice(0, 10)),
+        // booking_id: data.rows.map((row) => row.booked_date.slice(0, 10)),
       });
     });
     // .done((data) => {
-    //   Console.log(data);
+    //   console.log(data);
     // });
   }
 
@@ -93,14 +97,14 @@ class App extends React.Component {
   }
 
   getCheckInDate(dateMomentObj) {
-    console.log("check in: ", dateMomentObj);
+    // console.log("check in: ", dateMomentObj);
     this.setState({
       checkInDateMomentObj: dateMomentObj,
     });
   }
 
   getCheckOutDate(dateMomentObj) {
-    console.log("check out: ", dateMomentObj);
+    // console.log("check out: ", dateMomentObj);
     this.setState({
       checkOutDateMomentObj: dateMomentObj,
     });
@@ -108,27 +112,53 @@ class App extends React.Component {
 
   // post the current reservation to the corresponding room with the current room id in state
   postReservationData() {
+    let a = moment(this.state.checkOutDateMomentObj.format('YYYY-MM-DD'));
+    let b = moment(this.state.checkInDateMomentObj.format('YYYY-MM-DD'));
+    let length_of_stay = a.diff(b, 'days') // 1
+
+    this.state.allData.forEach((date) => {
+      console.log(this.state.checkInDateMomentObj === date.checkin_date);
+      // let checkout = moment(date.checkout_date.format('YYYY-MM-DD'))
+      // console.log(b === date.checkin_date)
+      // let checkin = moment(date.checkin_date.format('YYYY-MM-DD'));
+      // let checkin = date.checkin_date.slice(9);
+      // let checkout = moment(date.checkout_date.format('YYYY-MM-DD'));
+      // let checkout = date.checkout_date.slice(9);
+      if (this.state.checkInDateMomentObj === date.checkin_date || this.state.checkInDateMomentObj === date.checkin_date ) {
+        throw new Error('pick another date');
+        console.log(date.checkin_date)
+        this.clearDate();
+      }
+    })
+
+    // let length_of_stay = Math.abs(Number(this.state.checkOutDateMomentObj.format('YYYY-MM-DD').slice(9)) - Number(this.state.checkInDateMomentObj.format('YYYY-MM-DD').slice(9)));
+    console.log(this.state.propertyID)
+    let total = this.state.property_subtotal * length_of_stay;
     // declare the reservation data to post
     let reservation = {
+      property_id: this.state.propertyID,
       check_in: this.state.checkInDateMomentObj.format('YYYY-MM-DD'),
-      check_out: this.state.checkOutDateMomentObj.format('YYYY-MM-DD')
+      check_out: this.state.checkOutDateMomentObj.format('YYYY-MM-DD'),
+      total: total,
+      guests: this.state.adults + this.state.children,
+      reservation_id: this.state.reservation_id
     };
-    $.post(`/rooms/${this.state.roomId}/reservation`, reservation, () => {
+    $.post(`/properties/${this.state.propertyId}/reservations`, reservation, () => {
       // console.log("POST req sent");
       // clear the posted reservation data
       this.clearDate();
       // get the updated data of the corresponding room
-      this.getRoomData(this.state.roomId);
+      this.getPropertyData(this.state.propertyID);
     })
-      .done((data) => {
-        Console.log(data);
-      });
+    // .done((data) => {
+    //   console.log(data);
+    // });
   }
 
   // updateReservationData() {
-  //   let roomID = window.location.pathname.split('/')[2];
-  //   this.getRoomData(roomID);
-  //   $.get(`/rooms/${roomID}/reservation`, (data) => {
+  //   let propertyID = window.location.pathname.split('/')[2];
+  //   this.getRoomData(propertyID);
+  //   $.get(`/rooms/${propertyID}/reservation`, (data) => {
   //     pull rez id for corresponding check in and check out then call
   //     put request
   //   });
@@ -182,7 +212,7 @@ class App extends React.Component {
   add(guestType) {
     let children = this.state.children;
     let adults = this.state.adults;
-    let max = this.state.maximum_guests;
+    let max = this.state.maximum_guest;
     let infants = this.state.infants;
     if (guestType === 'Adults') {
       if (adults + children < max) {
