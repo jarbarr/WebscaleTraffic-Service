@@ -16,7 +16,3 @@ config.js
 # csv file
 *.csv
 
-# circle ci
-.circleci
-
-#
