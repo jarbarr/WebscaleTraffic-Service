@@ -17,3 +17,7 @@ newrelic_agent.log
 # csv file
 *.csv
 
+# json
+package-lock.json
+
+k6.js

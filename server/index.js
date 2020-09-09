@@ -9,11 +9,11 @@ const path = require('path');
 const expressStaticGzip = require('express-static-gzip');
 // const mysql = require('../mysql.db/model.js');
 const pgdb = require('../postgresql.db/model.js');
-const cassandra = require('../cassandra.db/index.js');
+// const cassandra = require('../cassandra.db/index.js');
 const controllers = require('./controllers.js');
 
 const app = express();
-const PORT = 3021;
+const PORT = 9042;
 const publicPath = path.join(__dirname, '/../public');
 
 // ============================================================ //

@@ -101,7 +101,7 @@ function writeProperties(n, stream, encoding, callback) {
 };
 
 
-const writeStream = fs.createWriteStream('./testproperties.csv');
+const writeStream = fs.createWriteStream('./cass.csv');
 
 writeStream.write('property_id,reservation_id,checkin_date,checkout_date,cleaning_fee,guests,maximum_guests,minimum_stay,nightly_fee,rating,reviews,service_fee,subtotal,total\n','ascii');
 

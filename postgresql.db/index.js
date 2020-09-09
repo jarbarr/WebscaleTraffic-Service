@@ -5,10 +5,10 @@ const { Client } = require('pg');
 const Console = console;
 
 const client = new Client({
-  user: 'jarbarr',
-  host: 'localhost',
+  user: 'postgres',
+  host: 'ec2-54-219-178-199.us-west-1.compute.amazonaws.com',
   database: 'calendar',
-  password: '',
+  password: 'queercoder',
   port: 5432,
 });
 
