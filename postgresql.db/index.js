@@ -8,7 +8,7 @@ const pool = new Pool({
   user: 'postgres',
   host: 'ec2-3-101-134-204.us-west-1.compute.amazonaws.com',
   database: 'calendar',
-  password: '',
+  password: 'queen',
   port: 5432,
 });
 
