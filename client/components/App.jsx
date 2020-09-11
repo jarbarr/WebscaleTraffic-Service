@@ -49,6 +49,7 @@ class App extends React.Component {
   componentDidMount() {
     // get a Property id by path
     let propertyID = window.location.pathname.split('/')[2];
+    console.log(propertyID)
     this.getPropertyData(propertyID);
   }
 

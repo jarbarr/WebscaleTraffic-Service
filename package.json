@@ -6,6 +6,7 @@
   "scripts": {
     "react-dev": "webpack -d --watch",
     "start": "nodemon server/index.js",
+    "queer": "node server/index.js",
     "csql": "cqlsh < ./cassandra.db/schema.cql",
     "mysql": "mysql -u root -p < ./mysql.db/schema.sql",
     "psql": "psql -d postgres -U jarbarr < ./postgresql.db/schema.sql",

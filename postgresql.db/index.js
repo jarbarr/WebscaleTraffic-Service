@@ -1,10 +1,10 @@
 // const postgres = require('postgres');
+/* eslint-disable */
 const { Client } = require('pg');
 // const config = require('./config.js');
+const { Pool } = require('pg');
 
-const Console = console;
-
-const client = new Client({
+const pool = new Pool({
   user: 'postgres',
   host: 'ec2-54-219-178-199.us-west-1.compute.amazonaws.com',
   database: 'calendar',
@@ -12,15 +12,37 @@ const client = new Client({
   port: 5432,
 });
 
-client.connect((err) => {
+pool.connect((err, client, release) => {
   if (err) {
-    Console.log(err);
-  } else {
-    Console.log('connected to postgres!');
+    return console.error('Error acquiring client', err.stack)
   }
-});
+  client.query('SELECT NOW()', (err, result) => {
+    release()
+    if (err) {
+      return console.error('Error executing query', err.stack)
+    }
+    console.log(result.rows[0].now)
+  })
+})
 
-module.exports = client;
+
+// const client = new Client({
+//   user: 'postgres',
+//   host: 'ec2-54-219-178-199.us-west-1.compute.amazonaws.com',
+//   database: 'calendar',
+//   password: 'queercoder',
+//   port: 5432,
+// });
+
+// client.connect((err) => {
+//   if (err) {
+//     Console.log(err);
+//   } else {
+//     Console.log('connected to postgres!');
+//   }
+// });
+
+module.exports = pool;
 
 // ==============================================================
 // For Connecting to Postgres Directly rather than through
