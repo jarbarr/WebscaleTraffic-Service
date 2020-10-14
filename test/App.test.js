@@ -1,5 +1,5 @@
 import App from '../client/components/App';
-
+/* eslint-disable */
 describe('<App />', () => {
   it('should invoke componentDidMount', () => {
     const spy = jest.spyOn(App.prototype, 'componentDidMount');

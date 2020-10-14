@@ -11,4 +11,13 @@ public/bundle.js
 config.js
 
 # test coverage folder
-coverage/
+newrelic.js
+newrelic_agent.log
+
+# csv file
+*.csv
+
+# json
+package-lock.json
+
+k6.js

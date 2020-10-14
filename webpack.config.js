@@ -9,18 +9,18 @@ module.exports = {
   entry: `${CLIENT_DIR}/index.jsx`,
   output: {
     filename: 'bundle.js',
-    path: PUBLIC_DIR
+    path: PUBLIC_DIR,
   },
   module: {
     rules: [
       {
         test: /\.jsx?/,
-        include : CLIENT_DIR,
+        include: CLIENT_DIR,
         use: {
-          loader: "babel-loader"
-        }
-      }
-    ]
+          loader: 'babel-loader',
+        },
+      },
+    ],
   },
   plugins: [
     new CompressionPlugin({
@@ -31,10 +31,10 @@ module.exports = {
       minRatio: 0.8,
     }),
     new BrotliPlugin({
-        asset: '[path].br[query]',
-        test: /\.(js|css|html|svg)$/,
-        threshold: 10240,
-        minRatio: 0.8
-    })
-  ]
+      asset: '[path].br[query]',
+      test: /\.(js|css|html|svg)$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
+  ],
 };
